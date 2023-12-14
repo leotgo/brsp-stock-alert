@@ -1,0 +1,4 @@
+[Bb]in/
+[Oo]bj/
+config/auth-brapi.ini
+config/smtp-credentials.ini
