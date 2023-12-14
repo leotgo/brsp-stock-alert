@@ -73,8 +73,8 @@ namespace BRSP.Providers.BRAPI
                 }
 
                 string responseBody = await httpResponse.Content.ReadAsStringAsync();
-                BRAPIResponse? brapiResponse = JsonConvert.DeserializeObject<BRAPIResponse>(responseBody!);
-                BRAPIStockResponse? stockInfo = brapiResponse?.results.First(stock => stock.StockCode == stockCode);
+                BRAPIResponse? brapiResponse = JsonConvert.DeserializeObject<BRAPIResponse>(responseBody);
+                BRAPIStockResponse? stockInfo = brapiResponse?.results?.First(stock => stock.StockCode == stockCode);
                 return stockInfo;
             }
         }
@@ -83,52 +83,52 @@ namespace BRSP.Providers.BRAPI
     [Serializable]
     public class BRAPIResponse
     {
-        public required List<BRAPIStockResponse> results { get; set; }
-        public DateTime requestedAt { get; set; }
+        public List<BRAPIStockResponse>? results { get; set; }
+        public DateTime? requestedAt { get; set; }
         public string? took { get; set; }
     }
 
     [Serializable]
     public class BRAPIStockResponse : IStockData
     {
-        public bool IsValidData => !error;
-        public string StockCode => symbol;
-        public string ShortName => shortName;
-        public string LongName => longName;
-        public double CurrentPrice => regularMarketPrice;
-        public DateTime Timestamp => updatedAt;
+        public bool IsValidData => !error ?? true;
+        public string StockCode => symbol ?? string.Empty;
+        public string ShortName => shortName ?? string.Empty;
+        public string LongName => longName ?? string.Empty;
+        public double CurrentPrice => regularMarketPrice ?? -1.0;
+        public DateTime Timestamp => updatedAt ?? DateTime.MinValue;
 
-        public string symbol { get; set; } // Ticker
-        public string currency { get; set; } // Moeda
-        public double twoHundredDayAverage { get; set; } // Média de 200 dias
-        public double twoHundredDayAverageChange { get; set; } // Variação da média de 200 dias
-        public double twoHundredDayAverageChangePercent { get; set; } // Variação percentual da média de 200 dias
-        public long marketCap { get; set; } // Capitalização de mercado
-        public string shortName { get; set; } // Nome da empresa
-        public string longName { get; set; } // Nome longo da empresa
-        public double regularMarketChange { get; set; } // Variação do preço diário
-        public double regularMarketChangePercent { get; set; } // Variação percentual do preço diário
-        public string regularMarketTime { get; set; } // Data e hora do último preço
-        public double regularMarketPrice { get; set; } // Preço atual
-        public double regularMarketDayHigh { get; set; } // Preço máximo do dia
-        public string regularMarketDayRange { get; set; } // Faixa de preço do dia
-        public double regularMarketDayLow { get; set; } // Preço mínimo do dia
-        public int regularMarketVolume { get; set; } // Volume do dia
-        public double regularMarketPreviousClose { get; set; } // Preço de fechamento do dia anterior
-        public double regularMarketOpen { get; set; } // Preço de abertura do dia
-        public int averageDailyVolume3Month { get; set; } // Volume médio dos últimos 3 meses
-        public int averageDailyVolume10Day { get; set; }
-        public double priceEarnings { get; set; }
-        public double earningsPerShare { get; set; }
-        public DateTime updatedAt { get; set; }
+        public string? symbol { get; set; } // Ticker
+        public string? currency { get; set; } // Moeda
+        public double? twoHundredDayAverage { get; set; } // Média de 200 dias
+        public double? twoHundredDayAverageChange { get; set; } // Variação da média de 200 dias
+        public double? twoHundredDayAverageChangePercent { get; set; } // Variação percentual da média de 200 dias
+        public long? marketCap { get; set; } // Capitalização de mercado
+        public string? shortName { get; set; } // Nome da empresa
+        public string? longName { get; set; } // Nome longo da empresa
+        public double? regularMarketChange { get; set; } // Variação do preço diário
+        public double? regularMarketChangePercent { get; set; } // Variação percentual do preço diário
+        public string? regularMarketTime { get; set; } // Data e hora do último preço
+        public double? regularMarketPrice { get; set; } // Preço atual
+        public double? regularMarketDayHigh { get; set; } // Preço máximo do dia
+        public string? regularMarketDayRange { get; set; } // Faixa de preço do dia
+        public double? regularMarketDayLow { get; set; } // Preço mínimo do dia
+        public int? regularMarketVolume { get; set; } // Volume do dia
+        public double? regularMarketPreviousClose { get; set; } // Preço de fechamento do dia anterior
+        public double? regularMarketOpen { get; set; } // Preço de abertura do dia
+        public int? averageDailyVolume3Month { get; set; } // Volume médio dos últimos 3 meses
+        public int? averageDailyVolume10Day { get; set; }
+        public double? priceEarnings { get; set; }
+        public double? earningsPerShare { get; set; }
+        public DateTime? updatedAt { get; set; }
 
-        public bool error { get; set; }
+        public bool? error { get; set; }
 
         public string? message { get; set; }
 
         public override string ToString()
         {
-            if (error)
+            if (error.HasValue && error.Value)
                 return $"{{ Erro: {message} }}";
 
             return $"{{ Ticker: \t{StockCode} | Preço Atual: \t{CurrentPrice} | Última Atualização: \t{Timestamp} }}";
