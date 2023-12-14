@@ -9,8 +9,8 @@
             "program": "${workspaceFolder}/bin/Debug/net7.0/BRSP_StockAlert.exe",
             "args": [
                 "PETR4",
-                "20.00",
-                "30.00"
+                "23.67",
+                "34.50"
             ],
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",

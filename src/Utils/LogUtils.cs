@@ -24,7 +24,7 @@ namespace BRSP
             for (int i = 0; i < 3; ++i)
                 args[i] = "[VAZIO]";
             for (int i = 1; i < inputParams.Length; ++i)
-                args[i] = inputParams[i];
+                args[i-1] = inputParams[i];
 
             string executableName = System.AppDomain.CurrentDomain.FriendlyName;
             Console.ResetColor();

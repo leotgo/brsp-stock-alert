@@ -180,12 +180,24 @@ class BRSP_StockAlert
                                   whatToDo: $"Certificar que o formato de entrada do parâmetro <{Constants.PARAM_MIN_THRESHOLD}> obedece o formato \'NN.NN\'. Exemplo: \'23.67\'.");
             return false;
         }
+        if (buyPrice <= 0.0)
+        {
+            LogUtils.LogExecError(details: $"O parâmetro <{Constants.PARAM_MIN_THRESHOLD}> (atual: \'{args[1]}\') precisa ser maior que zero.",
+                                  whatToDo: $"Certificar que <{Constants.PARAM_MIN_THRESHOLD}> é maior que zero.");
+            return false;
+        }
         inputParams.BuyPrice = buyPrice;
 
         if (!double.TryParse(args[2], out double sellPrice))
         {
             LogUtils.LogExecError(details: $"O parâmetro <{Constants.PARAM_MAX_THRESHOLD} = \'{args[2]}\'> não é um número decimal válido.",
                                   whatToDo: $"Certificar que o formato de entrada do parâmetro <{Constants.PARAM_MAX_THRESHOLD}> obedece o formato \'NN.NN\'. Exemplo: \'32.16\'.");
+            return false;
+        }
+        if(buyPrice >= sellPrice)
+        {
+            LogUtils.LogExecError(details: $"O parâmetro <{Constants.PARAM_MAX_THRESHOLD}> (atual: \'{args[2]}\') precisa ser maior que <{Constants.PARAM_MIN_THRESHOLD}> (atual: \'{args[1]}\').",
+                                  whatToDo: $"Certificar que <{Constants.PARAM_MAX_THRESHOLD}> é maior que <{Constants.PARAM_MIN_THRESHOLD}>.");
             return false;
         }
         inputParams.SellPrice = sellPrice;
